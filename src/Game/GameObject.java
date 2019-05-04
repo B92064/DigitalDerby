@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class GameObject {
@@ -20,6 +21,7 @@ public class GameObject {
 	}
 
 	void draw(Graphics g) {
+		g.setColor(Color.BLUE);
 		g.fillRect(x, y, width, height);
 	}
 }

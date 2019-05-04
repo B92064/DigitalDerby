@@ -21,13 +21,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 	Font titleFont;
 	Font pFont;
-	// GameObject O;
+	Font bFont;
+	GameObject O;
+	Racecar R;
 
 	public GamePanel() {
 		this.timer = timer;
 		this.titleFont = new Font("Arial", Font.BOLD, 48);
 		this.pFont = new Font("Arial", Font.PLAIN, 15);
-		// this.O = new GameObject(10, 10, 100, 100);
+		this.bFont = new Font("Arial", Font.BOLD, 15);
+		this.O = new GameObject(10, 10, 100, 100);
+		this.R = new Racecar(250, 600, 50, 50);
 	}
 
 	@Override
@@ -45,8 +49,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				currentState = GAME_STATE;
 			} else if (currentState == END_STATE) {
 				currentState = MENU_STATE;
+			} else if (currentState == INSTRUCTION_STATE) {
+				currentState = MENU_STATE;
 			}
 
+		} else if (e.getKeyCode() == KeyEvent.VK_I) {
+			if (currentState == MENU_STATE) {
+				currentState = INSTRUCTION_STATE;
+			}
+
+		} else if (e.getKeyCode() == KeyEvent.VK_A) {
+			R.left = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_D) {
+			R.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_1) {
+			R.speed = 5;
+		} else if (e.getKeyCode() == KeyEvent.VK_2) {
+			R.speed = 10;
+		} else if (e.getKeyCode() == KeyEvent.VK_3) {
+			R.speed = 15;
 		}
 	}
 
@@ -54,13 +75,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("keyReleased");
+		if (e.getKeyCode() == KeyEvent.VK_A) {
+			R.left = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_D) {
+			R.right = false;
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		// System.out.println("Digital Derby Auto Raceway");
-		// O.update();
+		O.update();
 		if (currentState == MENU_STATE) {
 
 			updateMenuState();
@@ -125,12 +151,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.YELLOW);
-		g.drawString("Digital Derby", 105, 70);
+		g.drawString("Digital Derby", 110, 115);
+		g.setFont(bFont);
+		g.drawString("Press Enter to start", 180, 500);
+		g.drawString("Press I for instructions", 170, 550);
 	}
 
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
+		O.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
@@ -139,6 +169,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawInstructionState(Graphics g) {
-
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
+		g.setColor(Color.YELLOW);
+		g.setFont(pFont);
+		g.drawString("Press 1, 2, and 3 to control speed.", 120, 200);
+		g.drawString("Turn the steering wheel to go left and right.", 110, 220);
 	}
 }
