@@ -24,14 +24,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font bFont;
 	GameObject O;
 	Racecar R;
-
+	ObjectManager OM;
+	Rival Ri;
+	
 	public GamePanel() {
 		this.timer = timer;
 		this.titleFont = new Font("Arial", Font.BOLD, 48);
 		this.pFont = new Font("Arial", Font.PLAIN, 15);
 		this.bFont = new Font("Arial", Font.BOLD, 15);
 		this.O = new GameObject(10, 10, 100, 100);
-		this.R = new Racecar(250, 600, 50, 50);
+		this.R = new Racecar(250, 550, 75, 100);
+		this.OM = new ObjectManager(R);
+		this.Ri = new Rival(100, 0 , 75, 100);
 	}
 
 	@Override
@@ -63,11 +67,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_D) {
 			R.right = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_1) {
-			R.speed = 5;
+		//	Ri.speed = 5;
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-			R.speed = 10;
+		//	Ri.speed = 10;
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-			R.speed = 15;
+		//	Ri.speed = 15;
 		}
 	}
 
@@ -79,6 +83,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			R.left = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_D) {
 			R.right = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_1) {
+		//	Ri.speed = 5;
+		} else if (e.getKeyCode() == KeyEvent.VK_2) {
+		//	Ri.speed = 10;
+		} else if (e.getKeyCode() == KeyEvent.VK_3) {
+		//	Ri.speed = 15;
 		}
 	}
 
@@ -135,7 +145,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateGameState() {
-
+		OM.update();
 	}
 
 	void updateEndState() {
@@ -161,6 +171,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		O.draw(g);
+		OM.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
