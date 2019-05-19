@@ -9,7 +9,9 @@ public class ObjectManager {
 	Racecar R;
 	ArrayList<Rival> Ri = new ArrayList<Rival>();
 	long enemyTimer = 0;
-	long enemySpawnTime = 4000;
+	long enemySpawnTime = 1000;
+	long lineTimer = 0;
+	long lineSpawnTime = 200;
 	Random random = new Random();
 	int random1;
 	int twov;
@@ -18,70 +20,93 @@ public class ObjectManager {
 	Random Randon = new Random();
 	int randon1 = random.nextInt(2);
 	int mph1;
-	
+	ArrayList<Line> L = new ArrayList<Line>();
+
 	public ObjectManager(Racecar R) {
 		this.R = R;
-		this.speed = 5;
-		
+
 	}
 
 	void update() {
 		R.update();
-		randomOne();
+		for (int i = 0; i < L.size(); i++) {
+			L.get(i).update();
+
+		}
+		// randomOne();
 		randomTwo();
 		manageEnemies();
-	//	System.out.println(rvalue);
+		manageLine();
+		// System.out.println(rvalue);
 		for (int i = 0; i < Ri.size(); i++) {
 			Ri.get(i).update();
-			Ri.get(i).mph += mph1;
+			// Ri.get(i).mph += mph1;
 		}
+
 		random1 = random.nextInt(500);
 	}
 
 	void draw(Graphics g) {
-		if(R.isAlive == true) {
-			R.draw(g);
-			}
-			for (int i = 0; i < Ri.size(); i++) {
-				if(Ri.get(i).isAlive == true) {
+		
+		for (int i = 0; i < Ri.size(); i++) {
+			if (Ri.get(i).isAlive == true) {
 				Ri.get(i).draw(g);
-				}
 			}
-	}
-	int randomOne() {
-		if(randon1 == 0) {
-			mph1 = 0;
-		} else if(randon1 == 1) {
-			mph1 = 5;
-		} else if(random1 == 2) {
-			mph1 = 10;
 		}
-		return mph1;
-		
-		
+		for (int i = 0; i < L.size(); i++) {
+			if (L.get(i).isAlive == true) {
+				L.get(i).draw(g);
+			}
+		}
+		if (R.isAlive == true) {
+			R.draw(g);
+		}
 	}
+
+	/*
+	 * int randomOne() { if(randon1 == 0) { mph1 = 0; } else if(randon1 == 1) { mph1
+	 * = 5; } else if(random1 == 2) { mph1 = 10; } return mph1;
+	 * 
+	 * 
+	 * }
+	 */
 	int randomTwo() {
-		if(random1 < 250) {
+		if (random1 < 250) {
 			twov = 1;
-			rvalue = 275;
-		} else if (random1 >250) {
+			rvalue = 266;
+		} else if (random1 > 250) {
 			twov = 2;
-			rvalue = 100;
+			rvalue = 120;
 		}
 		return rvalue;
-		
-		
-	}
-	public void manageEnemies(){
-        if(System.currentTimeMillis() - enemyTimer >= enemySpawnTime){
-                addRival(new Rival(randomTwo(), 0, 75, 100));
 
-enemyTimer = System.currentTimeMillis();
-        }
-}
+		// 61 is the distance between Rivals
+	}
+
+	public void manageEnemies() {
+		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
+			addRival(new Rival(randomTwo(), 0, 75, 100, 5));
+
+			enemyTimer = System.currentTimeMillis();
+		}
+	}
+
+	public void manageLine() {
+		if (System.currentTimeMillis() - lineTimer >= lineSpawnTime) {
+			addLine(new Line(245, 0, 10, 15));
+
+			lineTimer = System.currentTimeMillis();
+		}
+	}
+
 	void addRival(Rival i) {
 		Ri.add(i);
 	}
+
+	void addLine(Line i) {
+		L.add(i);
+	}
+
 	void purgeObjects() {
 		for (int i = 0; i < Ri.size(); i++) {
 			if (Ri.get(i).isAlive == false) {

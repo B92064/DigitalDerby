@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Racecar R;
 	ObjectManager OM;
 	Rival Ri;
+	Line L;
 	
 	public GamePanel() {
 		this.timer = timer;
@@ -35,7 +36,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		this.O = new GameObject(10, 10, 100, 100);
 		this.R = new Racecar(250, 550, 75, 100);
 		this.OM = new ObjectManager(R);
-		this.Ri = new Rival(100, 0 , 75, 100);
+		this.Ri = new Rival(100, 0 , 75, 100 , 5);
+		this.L = new Line(245, 0 , 10 , 15);
 	}
 
 	@Override
@@ -67,12 +69,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_D) {
 			R.right = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_1) {
-		//	Ri.speed = 5;
+			Rival.mph = 5;
+			OM.enemySpawnTime = 1000;
+			OM.lineSpawnTime = 200;
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-		//	Ri.speed = 10;
+			Rival.mph = 10;
+			OM.enemySpawnTime = 700;
+			OM.lineSpawnTime = 120;
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-		//	Ri.speed = 15;
+			Rival.mph = 15;
+			OM.enemySpawnTime = 400;
+			OM.lineSpawnTime = 110;
 		}
+		
 	}
 
 	@Override
@@ -85,10 +94,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			R.right = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_1) {
 		//	Ri.speed = 5;
+			Ri.mph = 10;
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
 		//	Ri.speed = 10;
+			Ri.mph = 15;
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
 		//	Ri.speed = 15;
+			Ri.mph = 20;
 		}
 	}
 
@@ -172,6 +184,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		O.draw(g);
 		OM.draw(g);
+		
 	}
 
 	void drawEndState(Graphics g) {
@@ -185,6 +198,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.YELLOW);
 		g.setFont(pFont);
 		g.drawString("Press 1, 2, and 3 to control speed.", 120, 200);
-		g.drawString("Turn the steering wheel to go left and right.", 110, 220);
+		g.drawString("Press A and D to go left and right.", 120, 220);
+		g.drawString("Press Enter to go back to menu.", 120, 600);
 	}
 }
