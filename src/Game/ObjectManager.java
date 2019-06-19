@@ -21,7 +21,8 @@ public class ObjectManager {
 	int randon1 = random.nextInt(2);
 	int mph1;
 	ArrayList<Line> L = new ArrayList<Line>();
-
+	int score = 0;
+	
 	public ObjectManager(Racecar R) {
 		this.R = R;
 
@@ -85,7 +86,7 @@ public class ObjectManager {
 
 	public void manageEnemies() {
 		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
-			addRival(new Rival(randomTwo(), 0, 75, 100, 5));
+			addRival(new Rival(randomTwo(), 0, 75, 80, 5));
 
 			enemyTimer = System.currentTimeMillis();
 		}
@@ -114,5 +115,20 @@ public class ObjectManager {
 				System.out.println("Dead");
 			}
 		}
+	}
+	void checkCollision() {
+		for(Rival r : Ri){
+
+	        if(R.collisionBox.intersects(r.collisionBox)){
+
+	                R.isAlive = false;
+
+	        }
+
+	}
+	}
+	String getScore() {
+		String w = "The score is "+ score;
+		return w;
 	}
 }

@@ -10,10 +10,11 @@ public class Line extends GameObject {
 		// TODO Auto-generated constructor stub
 	}
 void update() {
+	super.update();
 	y += Rival.mph + 5;
 }
 void draw(Graphics g) {
-	g.setColor(Color.YELLOW);
+	g.setColor(Color.WHITE);
 	g.fillRect(x, y, width, height);
 }
 }

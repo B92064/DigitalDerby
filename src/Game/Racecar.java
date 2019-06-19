@@ -16,6 +16,7 @@ int road = 8;
 		// TODO Auto-generated constructor stub
 	}
  void update() {
+	 super.update();
 	 
 	  if(left == true) {
 			x -= 10;
@@ -29,10 +30,10 @@ int road = 8;
 				x = 450;
 			}
 		}
+	  collisionBox.setBounds(x,y,width,height);
  }
 // to make road work make the race car have negative y constantly. Set boundaries to prevent it going off screen
  void draw(Graphics g){
-	 g.setColor(Color.BLUE);
-	 g.fillRect(x, y, width, height);
+	 g.drawImage(GamePanel.racecarImg,x,y,width,height,null);
  }
 }

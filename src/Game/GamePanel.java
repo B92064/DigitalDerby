@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,6 +30,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	ObjectManager OM;
 	Rival Ri;
 	Line L;
+	public static BufferedImage racecarImg;
+	public static BufferedImage rivalImg;
 	
 	public GamePanel() {
 		this.timer = timer;
@@ -34,10 +39,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		this.pFont = new Font("Arial", Font.PLAIN, 15);
 		this.bFont = new Font("Arial", Font.BOLD, 15);
 		this.O = new GameObject(10, 10, 100, 100);
-		this.R = new Racecar(250, 550, 75, 100);
+		this.R = new Racecar(250, 550, 75, 80);
 		this.OM = new ObjectManager(R);
-		this.Ri = new Rival(100, 0 , 75, 100 , 5);
+		this.Ri = new Rival(100, 0 , 75, 80 , 5);
 		this.L = new Line(245, 0 , 10 , 15);
+		try {
+
+            racecarImg = ImageIO.read(this.getClass().getResourceAsStream("racecar.png"));
+
+            rivalImg = ImageIO.read(this.getClass().getResourceAsStream("rival.png"));
+
+
+
+    } catch (IOException e) {
+
+            // TODO Auto-generated catch block
+
+            e.printStackTrace();
+
+    }
 	}
 
 	@Override
@@ -55,6 +75,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				currentState = GAME_STATE;
 			} else if (currentState == END_STATE) {
 				currentState = MENU_STATE;
+				R = new Racecar(250, 550, 75, 80);
+				OM = new ObjectManager(R);
 			} else if (currentState == INSTRUCTION_STATE) {
 				currentState = MENU_STATE;
 			}
@@ -158,6 +180,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void updateGameState() {
 		OM.update();
+		if(R.isAlive == false) {
+			currentState = END_STATE;
+		}
 	}
 
 	void updateEndState() {
@@ -182,14 +207,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
+		g.setColor(Color.yellow);
+		g.drawString(OM.getScore(), 10, 20);
 		O.draw(g);
 		OM.draw(g);
+		OM.checkCollision();
+		OM.purgeObjects();
 		
 	}
 
 	void drawEndState(Graphics g) {
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
+		g.setColor(Color.BLACK);
+		g.setFont(titleFont);
+		g.drawString("YOU DIED", 140, 200);
+		g.setFont(pFont);
+		g.drawString("Press Enter to Restart", 170, 330);
 	}
 
 	void drawInstructionState(Graphics g) {
