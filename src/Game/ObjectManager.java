@@ -22,7 +22,7 @@ public class ObjectManager {
 	int mph1;
 	ArrayList<Line> L = new ArrayList<Line>();
 	int score = 0;
-	
+	int scoreTime;
 	public ObjectManager(Racecar R) {
 		this.R = R;
 
@@ -62,6 +62,11 @@ public class ObjectManager {
 		if (R.isAlive == true) {
 			R.draw(g);
 		}
+		/*
+		for(int i = 0; i< 999999999; i++) {
+			
+		}
+		*/
 	}
 
 	/*

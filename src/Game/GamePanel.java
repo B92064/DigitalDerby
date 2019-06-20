@@ -117,12 +117,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_1) {
 		//	Ri.speed = 5;
 			Ri.mph = 10;
+			OM.enemySpawnTime = 1000;
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
 		//	Ri.speed = 10;
 			Ri.mph = 15;
+			OM.enemySpawnTime = 650;
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
 		//	Ri.speed = 15;
 			Ri.mph = 20;
+			OM.enemySpawnTime = 500;
 		}
 	}
 
