@@ -17,11 +17,14 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int frameRate = 20;
 	Timer timer = new Timer(1000 / frameRate, this);
+	Timer scoreTimer; 
 	final int MENU_STATE = 0;
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 	final int INSTRUCTION_STATE = 3;
 	int currentState = MENU_STATE;
+	static int score = 0;
+	static int addedScore =1;
 	Font titleFont;
 	Font pFont;
 	Font bFont;
@@ -39,10 +42,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		this.pFont = new Font("Arial", Font.PLAIN, 15);
 		this.bFont = new Font("Arial", Font.BOLD, 15);
 		this.O = new GameObject(10, 10, 100, 100);
-		this.R = new Racecar(250, 550, 75, 80);
+		this.R = new Racecar(250, 420, 60, 85);
 		this.OM = new ObjectManager(R);
-		this.Ri = new Rival(100, 0 , 75, 80 , 5);
+		this.Ri = new Rival(100, 0 , 60, 85 , 5);
 		this.L = new Line(245, 0 , 10 , 15);
+		this.scoreTimer = new Timer(2000,OM);
 		try {
 
             racecarImg = ImageIO.read(this.getClass().getResourceAsStream("racecar.png"));
@@ -65,7 +69,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		System.out.println("keyTyped");
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -75,8 +79,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				currentState = GAME_STATE;
 			} else if (currentState == END_STATE) {
 				currentState = MENU_STATE;
-				R = new Racecar(250, 550, 75, 80);
+				R = new Racecar(250, 420, 60, 85);
 				OM = new ObjectManager(R);
+				score = 0;
+				Rival.mph = 5;
+				OM.enemySpawnTime = 1000;
+				OM.lineSpawnTime = 200;
+				Ri.mph = 10;
+				OM.enemySpawnTime = 1000;
+				addedScore = 1;
 			} else if (currentState == INSTRUCTION_STATE) {
 				currentState = MENU_STATE;
 			}
@@ -118,14 +129,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		//	Ri.speed = 5;
 			Ri.mph = 10;
 			OM.enemySpawnTime = 1000;
+			addedScore = 1;
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
 		//	Ri.speed = 10;
 			Ri.mph = 15;
 			OM.enemySpawnTime = 650;
+			addedScore = 2;
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
 		//	Ri.speed = 15;
 			Ri.mph = 20;
 			OM.enemySpawnTime = 500;
+			addedScore = 3;
 		}
 	}
 
@@ -174,7 +188,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void startGame() {
 		timer.start();
-
+		scoreTimer.start();
 	}
 
 	void updateMenuState() {
@@ -211,8 +225,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		g.setColor(Color.yellow);
-		g.drawString(OM.getScore(), 10, 20);
-		O.draw(g);
+		g.drawString("The score is " + score, 10, 20);
 		OM.draw(g);
 		OM.checkCollision();
 		OM.purgeObjects();
@@ -237,5 +250,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Press 1, 2, and 3 to control speed.", 120, 200);
 		g.drawString("Press A and D to go left and right.", 120, 220);
 		g.drawString("Press Enter to go back to menu.", 120, 600);
+		g.drawString("To get more points go at higher speeds.", 110, 240);
+		g.drawString("Try to get the highest amount of points before the time runs out!", 40, 260);
 	}
 }

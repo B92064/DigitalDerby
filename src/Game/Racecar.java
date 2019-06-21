@@ -30,6 +30,12 @@ int road = 8;
 				x = 450;
 			}
 		}
+	  if(x < 101) {
+		  x = 101;
+	  } else if(x > 329) {
+		  x=329;
+		  //329
+	  }
 	  collisionBox.setBounds(x,y,width,height);
  }
 // to make road work make the race car have negative y constantly. Set boundaries to prevent it going off screen

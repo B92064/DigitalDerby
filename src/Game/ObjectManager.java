@@ -1,11 +1,13 @@
 package Game;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 
-public class ObjectManager {
+public class ObjectManager implements ActionListener {
 	Racecar R;
 	ArrayList<Rival> Ri = new ArrayList<Rival>();
 	long enemyTimer = 0;
@@ -79,10 +81,10 @@ public class ObjectManager {
 	int randomTwo() {
 		if (random1 < 250) {
 			twov = 1;
-			rvalue = 266;
+			rvalue = 270;
 		} else if (random1 > 250) {
 			twov = 2;
-			rvalue = 120;
+			rvalue = 160;
 		}
 		return rvalue;
 
@@ -91,7 +93,7 @@ public class ObjectManager {
 
 	public void manageEnemies() {
 		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
-			addRival(new Rival(randomTwo(), 0, 75, 80, 5));
+			addRival(new Rival(randomTwo(), 0, 60, 85, 5));
 
 			enemyTimer = System.currentTimeMillis();
 		}
@@ -132,8 +134,11 @@ public class ObjectManager {
 
 	}
 	}
-	String getScore() {
-		String w = "The score is "+ score;
-		return w;
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		GamePanel.score+= GamePanel.addedScore;
 	}
 }
