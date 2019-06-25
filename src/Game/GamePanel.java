@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Line L;
 	public static BufferedImage racecarImg;
 	public static BufferedImage rivalImg;
+	public static BufferedImage titleImg;
 	
 	public GamePanel() {
 		this.timer = timer;
@@ -46,14 +47,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		this.OM = new ObjectManager(R);
 		this.Ri = new Rival(100, 0 , 60, 85 , 5);
 		this.L = new Line(245, 0 , 10 , 15);
-		this.scoreTimer = new Timer(2000,OM);
+		this.scoreTimer = new Timer(1000,OM);
 		try {
 
             racecarImg = ImageIO.read(this.getClass().getResourceAsStream("racecar.png"));
 
             rivalImg = ImageIO.read(this.getClass().getResourceAsStream("rival.png"));
 
-
+            titleImg = ImageIO.read(this.getClass().getResourceAsStream("TitleScreen.png"));
 
     } catch (IOException e) {
 
@@ -76,6 +77,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		System.out.println("keyPressed");
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU_STATE) {
+				scoreTimer.restart();
 				currentState = GAME_STATE;
 			} else if (currentState == END_STATE) {
 				currentState = MENU_STATE;
@@ -199,6 +201,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		OM.update();
 		if(R.isAlive == false) {
 			currentState = END_STATE;
+			scoreTimer.stop();
 		}
 	}
 
@@ -212,7 +215,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void drawMenuState(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
+		g.drawImage(titleImg, 0,0 ,DigitalDerby.WIDTH, DigitalDerby.HEIGHT,null);
 		g.setFont(titleFont);
 		g.setColor(Color.YELLOW);
 		g.drawString("Digital Derby", 110, 115);
@@ -239,7 +242,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(titleFont);
 		g.drawString("YOU DIED", 140, 200);
 		g.setFont(pFont);
-		g.drawString("Press Enter to Restart", 170, 330);
+		g.drawString("Press Enter to Restart", 170, 430);
+		g.drawString("Your score was "+ score, 183, 450);
 	}
 
 	void drawInstructionState(Graphics g) {
@@ -247,10 +251,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		g.setColor(Color.YELLOW);
 		g.setFont(pFont);
-		g.drawString("Press 1, 2, and 3 to control speed.", 120, 200);
-		g.drawString("Press A and D to go left and right.", 120, 220);
+		g.drawString("Press 1, 2, and 3 to control speed.", 120, 220);
+		g.drawString("Press A and D to go left and right.", 120, 200);
 		g.drawString("Press Enter to go back to menu.", 120, 600);
-		g.drawString("To get more points go at higher speeds.", 110, 240);
+		g.drawString("To get more points per second go at higher speeds.", 80, 240);
 		g.drawString("Try to get the highest amount of points before the time runs out!", 40, 260);
 	}
 }
