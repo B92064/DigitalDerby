@@ -140,5 +140,6 @@ public class ObjectManager implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		GamePanel.score+= GamePanel.addedScore;
+		GamePanel.timeLeft -= 1;
 	}
 }

@@ -25,6 +25,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 	static int score = 0;
 	static int addedScore =1;
+	static int timeLeft = 90;
+	long gameTimer = System.currentTimeMillis();
+	long gameEnd =90000; // This is how long the game lasts gameEnd/1000 is time in seconds
 	Font titleFont;
 	Font pFont;
 	Font bFont;
@@ -77,6 +80,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		System.out.println("keyPressed");
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU_STATE) {
+				gameTimer = System.currentTimeMillis();
+				scoreTimer.start();
 				scoreTimer.restart();
 				currentState = GAME_STATE;
 			} else if (currentState == END_STATE) {
@@ -190,7 +195,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void startGame() {
 		timer.start();
-		scoreTimer.start();
+		
 	}
 
 	void updateMenuState() {
@@ -203,6 +208,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			currentState = END_STATE;
 			scoreTimer.stop();
 		}
+		
+		manageGame();
 	}
 
 	void updateEndState() {
@@ -229,6 +236,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		g.setColor(Color.yellow);
 		g.drawString("The score is " + score, 10, 20);
+		g.drawString("Time left: "+ timeLeft , 400, 20);
 		OM.draw(g);
 		OM.checkCollision();
 		OM.purgeObjects();
@@ -240,7 +248,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, DigitalDerby.WIDTH, DigitalDerby.HEIGHT);
 		g.setColor(Color.BLACK);
 		g.setFont(titleFont);
-		g.drawString("YOU DIED", 140, 200);
+		g.drawString("GAME END", 120, 200);
 		g.setFont(pFont);
 		g.drawString("Press Enter to Restart", 170, 430);
 		g.drawString("Your score was "+ score, 183, 450);
@@ -256,5 +264,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Press Enter to go back to menu.", 120, 600);
 		g.drawString("To get more points per second go at higher speeds.", 80, 240);
 		g.drawString("Try to get the highest amount of points before the time runs out!", 40, 260);
+	}
+	public void manageGame() {
+		if(System.currentTimeMillis() - gameTimer >= gameEnd) {
+			currentState = END_STATE;
+			scoreTimer.stop();
+		}
 	}
 }
