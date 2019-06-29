@@ -24,7 +24,7 @@ public class Rival extends GameObject {
 	void draw(Graphics g) {
 	//	System.out.println("Rival Drawn");
 		
-	System.out.println(mph + random1);
+//	System.out.println(mph + random1);
 	g.drawImage(GamePanel.rivalImg,x,y,width,height,null);
 	}
 }
